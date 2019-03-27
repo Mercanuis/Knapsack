@@ -2,13 +2,13 @@ package knapsack
 
 import "fmt"
 
-//Solution blah
+//Solution represents a possible solution
 type Solution struct {
 	items []Item
 	value int
 }
 
-//NewSolution blah
+//NewSolution returns a Solution
 func NewSolution(items []Item, value int) *Solution {
 	return &Solution{
 		items: items,
@@ -16,7 +16,7 @@ func NewSolution(items []Item, value int) *Solution {
 	}
 }
 
-//Display blah
+//Display prints out the solution
 func (s *Solution) Display() {
 	if s.items != nil && len(s.items) > 0 {
 		fmt.Printf("Solution contains %d items\n", len(s.items))

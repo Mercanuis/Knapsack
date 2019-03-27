@@ -4,13 +4,13 @@ import (
 	"math"
 )
 
-//Knapsack blah
+//Knapsack represents a knapsack of items
 type Knapsack struct {
 	items    []Item
 	capacity int
 }
 
-//NewKnapsack blah
+//NewKnapsack returns a new Knapsack
 func NewKnapsack(items []Item, capacity int) Knapsack {
 	return Knapsack{
 		items:    items,
@@ -18,36 +18,35 @@ func NewKnapsack(items []Item, capacity int) Knapsack {
 	}
 }
 
-//SolveKnapsack blah
+//SolveKnapsack determines the knapsack's best solution per its capacity
+//and then returns a Solution to print out
 func (k *Knapsack) SolveKnapsack() *Solution {
 	numItems := len(k.items)
 	capacity := k.capacity
 
+	//use make to initialize the 2D array because Go doesn't like non-constant initializations
 	matrix := make([][]int, numItems+1)
 	for i := range matrix {
 		matrix[i] = make([]int, capacity+1)
 	}
 
-	//initialize index 0 for all rows to 0
-	for i := 0; i < capacity; i++ {
-		matrix[0][i] = 0
-	}
-
 	//fill in the matrix and figure out the weights
-	for i := 1; i < numItems; i++ {
-		for j := 0; j < capacity; j++ {
+	for i := 1; i <= numItems; i++ {
+		//iterate each capacity
+		for j := 0; j <= capacity; j++ {
 			if k.items[i-1].weight > j {
 				matrix[i][j] = matrix[i-1][j]
 			} else {
-				matrix[i][j] = int(
-					math.Max(float64(matrix[i-1][j]),
-						float64(matrix[i-1][j-k.items[i-1].weight]+k.items[i-1].value)))
+				//for debugging purposes
+				jvalue := j - k.items[i-1].weight
+				kvalue := k.items[i-1].value
+				matrix[i][j] = int(math.Max(float64(matrix[i-1][j]), float64(matrix[i-1][jvalue]+kvalue)))
 			}
 		}
 	}
 
 	//Determine values via the matrix
-	res := matrix[numItems-1][capacity-1]
+	res := matrix[numItems][capacity]
 	w := capacity
 	var sol = make([]Item, 0)
 
@@ -60,5 +59,5 @@ func (k *Knapsack) SolveKnapsack() *Solution {
 		}
 	}
 
-	return NewSolution(sol, matrix[numItems-1][capacity-1])
+	return NewSolution(sol, matrix[numItems][capacity])
 }

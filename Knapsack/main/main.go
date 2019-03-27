@@ -10,7 +10,7 @@ func main() {
 	i5 := knapsack.NewItem("item5", 5, 6)
 
 	items := []knapsack.Item{i1, i2, i3, i4, i5}
-	sack := knapsack.NewKnapsack(items, 5)
+	sack := knapsack.NewKnapsack(items, 12)
 	solution := sack.SolveKnapsack()
 	solution.Display()
 }
